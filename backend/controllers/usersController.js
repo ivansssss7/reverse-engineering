@@ -23,7 +23,7 @@ module.exports.register = async (req, res) => {
                     token
                 });
             } else {
-                return res.status(401).json({ errors: [{ msg: `${email} is already taken`, param: "email" }] })
+                return res.status(400).json({ errors: [{ msg: `${email} is already taken`, param: "email" }] })
             }
 
         } catch (error) {
@@ -66,6 +66,6 @@ module.exports.login = async (req, res) =>{
         }
      }else{
         //validation failed
-        return res.status(401).json({errors:errors.array()});
+        return res.status(400).json({errors:errors.array()});
      }
 }
