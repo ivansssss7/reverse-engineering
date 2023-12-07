@@ -1,4 +1,4 @@
-const { body } = require("express-validator")
+const { body } = require("express-validator");
 
 module.exports.registerValidations = [
     body("name").not().isEmpty().trim().escape().withMessage("Name is required"),

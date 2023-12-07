@@ -4,11 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import ScreenHeader from "../../components/ScreenHeader";
 import Wrapper from "./Wrapper";
 import { clearMessage, setSuccess } from "../../store/reducers/globalReducer";
-import { useGetQuery, useDeleteCategoryMutation } from "../../store/services/categoryService";
+import { useGetQuery, useDeleteBrandMutation } from "../../store/services/brandService";
 import Spinner from "../../components/Spinner";
 import Pagination from "../../components/Pagination";
 
-const Categories = () => {
+const Brands = () => {
   let { page } = useParams();
   if (!page) {
     page = 1;
@@ -17,11 +17,11 @@ const Categories = () => {
   const { success } = useSelector((state) => state.globalReducer);
   const dispatch = useDispatch();
   const { data = [], isFetching } = useGetQuery(page);
-  const [removeCategory, response] = useDeleteCategoryMutation();
+  const [removeBrand, response] = useDeleteBrandMutation();
   console.log(response);
-  const deleteCat = (id) => {
-    if (window.confirm("Are you sure you want to delete the category?")) {
-      removeCategory(id);
+  const deleteBr = (id) => {
+    if (window.confirm("Are you sure you want to delete the brand?")) {
+      removeBrand(id);
     }
   };
   useEffect(() => {
@@ -40,13 +40,13 @@ const Categories = () => {
   return (
     <Wrapper>
       <ScreenHeader>
-        <Link to="/dashboard/create-category" className="btn-dark">
-          add car brand <i className="bi bi-plus"></i>
+        <Link to="/dashboard/create-brand" className="btn-dark">
+          add brands <i className="bi bi-plus"></i>
         </Link>
       </ScreenHeader>
       {success && <div className="alert-success">{success}</div>}
       {!isFetching ? (
-        data?.categories.length > 0 && (
+        data?.brands?.length > 0 && (
           <>
             <div>
               <table className="w-full bg-gray-900 rounded-md">
@@ -58,16 +58,16 @@ const Categories = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.categories?.map((category) => (
-                    <tr key={category.id} className="odd:bg-gray-800">
-                      <td className="p-3 capitalize texy-sm font-normal text-gray-400 ">{category.name}</td>
+                {data?.brands?.map((brand) => (
+                    <tr key={brand._id} className="odd:bg-gray-800">
+                      <td className="p-3 capitalize texy-sm font-normal text-gray-400 ">{brand.name}</td>
                       <td className="p-3 capitalize texy-sm font-normal text-gray-400 ">
-                        <Link to={`/dashboard/update-category/${category._id}`} className="btn btn-warning">
+                        <Link to={`/dashboard/update-brand/${brand._id}`} className="btn btn-warning">
                           edit
                         </Link>
                       </td>
                       <td className="p-3 capitalize texy-sm font-normal text-gray-400 ">
-                        <button className="btn btn-danger" onClick={() => deleteCat(category._id)}>
+                        <button className="btn btn-danger" onClick={() => deleteBr(brand._id)}>
                           delete
                         </button>
                       </td>
@@ -76,7 +76,7 @@ const Categories = () => {
                 </tbody>
               </table>
             </div>
-            <Pagination page={parseInt(page)} perPage={data.perPage} count={data.count} path="dashboard/categories" />
+            <Pagination page={parseInt(page)} perPage={data.perPage} count={data.count} path="dashboard/brands" />
           </>
         )
       ) : (
@@ -86,4 +86,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Brands;

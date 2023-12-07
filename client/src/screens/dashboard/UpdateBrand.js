@@ -5,26 +5,26 @@ import ScreenHeader from "../../components/ScreenHeader";
 import Wrapper from "./Wrapper";
 import { setSuccess } from "../../store/reducers/globalReducer";
 import {
-  useFetchCategoryQuery,
-  useUpdateCategoryMutation,
-} from "../../store/services/categoryService";
+  useFetchBrandQuery,
+  useUpdateBrandMutation,
+} from "../../store/services/brandService";
 import Spinner from "../../components/Spinner";
 
-const UpdateCategory = () => {
+const UpdateBrand = () => {
   const [state, setState] = useState("");
   const { id } = useParams();
-  const { data, isFetching } = useFetchCategoryQuery(id);
-  console.log("category data: ", data);
+  const { data, isFetching } = useFetchBrandQuery(id);
+  console.log("brand data: ", data);
   useEffect(() => {
-    data?.category && setState(data?.category?.name);
-  }, [data?.category]);
+    data?.brand && setState(data?.brand?.name);
+  }, [data?.brand]);
 
-  const [saveCategory, response] = useUpdateCategoryMutation();
+  const [saveBrand, response] = useUpdateBrandMutation();
   console.log(response);
   const errors = response?.error?.data?.errors ? response?.error?.data?.errors : [];
   const updateSubmit = (e) => {
     e.preventDefault();
-    saveCategory({ name: state, id });
+    saveBrand({ name: state, id });
   };
 
   const navigate = useNavigate();
@@ -33,20 +33,20 @@ const UpdateCategory = () => {
   useEffect(() => {
     if (response?.isSuccess) {
       dispatch(setSuccess(response?.data?.message));
-      navigate("/dashboard/categories");
+      navigate("/dashboard/brands");
     }
   }, [response?.isSuccess, response?.data?.message, dispatch, navigate]);
 
   return (
     <Wrapper>
       <ScreenHeader>
-        <Link to="/dashboard/categories" className="btn-dark">
-          <i className="bi bi-arrow-left-short"></i> categories list
+        <Link to="/dashboard/brands" className="btn-dark">
+          <i className="bi bi-arrow-left-short"></i> brands list
         </Link>
       </ScreenHeader>
       {!isFetching ? (
         <form className="w-full md:w-8/12" onSubmit={updateSubmit}>
-          <h3 className="text-lg capitalize mb-3">Update category</h3>
+          <h3 className="text-lg capitalize mb-3">Update brand</h3>
           {errors.length > 0 &&
             errors.map((error, key) => (
               <p className="alert-danger" key={key}>
@@ -58,7 +58,7 @@ const UpdateCategory = () => {
               type="text"
               name=""
               className="form-control"
-              placeholder="Category Name..."
+              placeholder="Brand Name..."
               value={state}
               onChange={(e) => setState(e.target.value)}
             />
@@ -74,4 +74,4 @@ const UpdateCategory = () => {
   );
 };
 
-export default UpdateCategory;
+export default UpdateBrand;

@@ -2,12 +2,12 @@ const express = require("express");
 const cors = require("cors")
 const env = require("./config/envConfig");
 const connect = require("./config/db");
-const userRoutes = require("./routes/userRoutes");
-const categoryRoutes = require("./routes/categoryRoutes");
-const modelRoutes = require("./routes/modelRoutes")
+const userRoutes = require("./routes/user.route");
+const brandRoutes = require("./routes/brand.route");
+const modelRoutes = require("./routes/model.route");
 const app = express();
 
-//database connection 
+//database connection
 connect();
 app.use(cors())
 //add middleware
@@ -17,9 +17,9 @@ app.get("/", (req, res) => {
     res.json({ msg: "Welcome to autoparts" });
 });
 //user routes
-app.use("/api", userRoutes);
-app.use("/api", categoryRoutes);
-app.use("/api", modelRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/brand", brandRoutes);
+app.use("/api/model", modelRoutes);
 
 const port = env.PORT || 3000;
 

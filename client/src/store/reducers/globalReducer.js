@@ -1,18 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const globalReducer = createSlice({
-    name:"global",
-    initialState:{
-        success:""
+    name: "global",
+    initialState: {
+        success: ""
     },
     reducers:{
-        setSuccess:(state, action)=>{
+        setSuccess: (state, action) => {
             state.success = action.payload;
         },
-        clearMessage :(state) =>{
+        clearMessage: (state) => {
             state.success = "";
         }
     }
-})
-export const {setSuccess, clearMessage} = globalReducer.actions;
+});
+export const { setSuccess, clearMessage } = globalReducer.actions;
 export default globalReducer.reducer;

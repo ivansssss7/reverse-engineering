@@ -5,6 +5,8 @@
 @import "tailwindcss/utilities";
 
 @layer components{
+
+
     .alert-danger{
         @apply bg-red-100 text-red-700 p-3 mb-2 border-l-4 border-rose-600 text-sm font-medium;
     }

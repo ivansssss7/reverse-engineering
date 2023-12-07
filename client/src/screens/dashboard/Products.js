@@ -5,7 +5,7 @@ const Products = () => {
             lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
             lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
         </Wrapper>
-    )
+    );
 }
 
 export default Products;

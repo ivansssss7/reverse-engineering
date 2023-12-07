@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 
 const Pagination = ({ page, count, perPage, path }) => {
+
+  const handlePageChange = (newPage) => {
+    // Оновлюємо шлях при зміні сторінки
+    const newPath = `/${path}/${newPage}`;
+    window.history.pushState(null, "", newPath);
+  };
+
   const totalLinks = Math.ceil(count / perPage);
   let startLoop = page;
   let diff = totalLinks - page;
@@ -17,7 +24,13 @@ const Pagination = ({ page, count, perPage, path }) => {
     for (let i = startLoop; i <= endLoop; i++) {
       allLinks.push(
         <li key={i}>
-          <Link className={`pagination-link ${page === i && "bg-gray-400 text-gray-900"}`} to={`/${path}/${i}`}>{i}</Link>
+          <Link
+            className={`pagination-link ${page === i && "bg-gray-400 text-gray-900"}`}
+            to={`/${path}/${i}`}
+            onClick={() => handlePageChange(i)}
+          >
+            {i}
+          </Link>
         </li>
       );
     }
@@ -28,7 +41,13 @@ const Pagination = ({ page, count, perPage, path }) => {
     if (page < totalLinks) {
       return (
         <li>
-          <Link className="pagination-link" to={`/${path}/${page + 1}`}><i class="bi bi-chevron-double-right"></i></Link>
+          <Link
+            className="pagination-link"
+            to={`/${path}/${page + 1}`}
+            onClick={() => handlePageChange(page + 1)}
+          >
+            <i className="bi bi-chevron-double-right"></i>
+          </Link>
         </li>
       );
     }
@@ -38,13 +57,19 @@ const Pagination = ({ page, count, perPage, path }) => {
     if (page > 1) {
       return (
         <li>
-          <Link className="pagination-link" to={`/${path}/${page - 1}`}><i class="bi bi-chevron-double-left"></i></Link>
+          <Link
+            className="pagination-link"
+            to={`/${path}/${page - 1}`}
+            onClick={() => handlePageChange(page - 1)}
+          >
+            <i className="bi bi-chevron-double-left"></i>
+          </Link>
         </li>
       );
     }
   };
 
-  return count > 3 && (
+  return count > perPage && (
     <ul className="flex mt-2">
       {prev()}
       {links()}

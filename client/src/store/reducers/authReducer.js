@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import jwtDecode from "jwt-decode"
-const customerToken = localStorage.getItem('userToken')
+import jwtDecode from "jwt-decode";
+const customerToken = localStorage.getItem('userToken');
 
 function verifyToken(keyName) {
     const storage = localStorage.getItem(keyName);
-    if(storage) {
+    if (storage) {
        const decodeToken = jwtDecode(storage);
        const expiresIn = new Date(decodeToken.exp * 1000);
-       if(new Date() > expiresIn) {
+       if (new Date() > expiresIn) {
            localStorage.removeItem(keyName);
            return null;
        } else {
@@ -32,16 +32,17 @@ const authReducer = createSlice({
             state.userToken = action.payload;
             state.user = jwtDecode(action.payload);
         },
-        logout: (state, {payload}) => {
+        logout: (state, { payload }) => {
+          console.log(1, payload)
           localStorage.removeItem(payload)
-          if(payload === 'admin-token') {
+          if (payload === 'admin-token') {
             state.adminToken = null;
-          } else if(payload === 'userToken') {
+          } else if (payload === 'userToken') {
             state.userToken = null;
             state.user = null;
           }
         }
     }
-})
-export const {setAdminToken, setUserToken, logout} = authReducer.actions;
+});
+export const { setAdminToken, setUserToken, logout } = authReducer.actions;
 export default authReducer.reducer;
