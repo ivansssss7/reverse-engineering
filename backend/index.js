@@ -5,6 +5,7 @@ const connect = require("./config/db");
 const userRoutes = require("./routes/user.route");
 const brandRoutes = require("./routes/brand.route");
 const modelRoutes = require("./routes/model.route");
+const sparePartRoutes = require("./routes/spare-part.route");
 const app = express();
 
 //database connection
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 app.use("/api/user", userRoutes);
 app.use("/api/brand", brandRoutes);
 app.use("/api/model", modelRoutes);
+app.use("/api/spare-part", sparePartRoutes);
 
 const port = env.PORT || 3000;
 

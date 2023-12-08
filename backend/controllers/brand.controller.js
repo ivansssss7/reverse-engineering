@@ -9,7 +9,7 @@ class Brand {
             const exist = await BrandModel.findOne({ name });
             if (!exist) {
                 await BrandModel.create({ name });
-                return res.status(201).json({ message:"Your brand has created successfully" });
+                return res.status(201).json({ message:"Your brand has been created successfully" });
             } else {
                 return res.status(400).json({ errors: [{ msg: `${name} is already exist` }] });
             }
@@ -55,7 +55,7 @@ class Brand {
             const exist = await BrandModel.findOne({ name });
             if (!exist) {
                 const response = await BrandModel.updateOne({ _id: id }, { $set: { name }});
-                return res.status(200).json({ message: "Your brand has updated successfully" });
+                return res.status(200).json({ message: "Your brand has been updated successfully" });
             } else {
                 return res.status(400).json({ errors: [{ msg: `${name} is already exist` }] });
             }

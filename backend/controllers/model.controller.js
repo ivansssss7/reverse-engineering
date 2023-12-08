@@ -54,7 +54,7 @@ class Model {
               carEngine: parsedData.carEngine,
               enginePower: parsedData.enginePower,
             });
-            return res.status(201).json({ msg: "Model has created", response });
+            return res.status(201).json({ msg: "Model has been created", response });
           } catch (error) {
             console.log(error);
             return res.status(500).json(error);

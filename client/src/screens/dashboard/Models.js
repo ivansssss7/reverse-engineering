@@ -1,5 +1,5 @@
 import Wrapper from "./Wrapper";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessage } from "../../store/reducers/globalReducer";
@@ -7,8 +7,11 @@ import toast, { Toaster } from "react-hot-toast";
 import { useGetModelsQuery } from "../../store/services/modelService";
 import ScreenHeader from "../../components/ScreenHeader";
 import Spinner from "../../components/Spinner";
+import Input from "../../components/Input";
 
 const Models = () => {
+    let [brandSearch, setBrandSearch] = useState('');
+    const [modelsToShow, setModelsToShow] = useState([]);
     let { page } = useParams();
     if (!page) {
         page = 1;
@@ -27,6 +30,24 @@ const Models = () => {
         }
     }, []);
 
+    useEffect(() => {
+        if (brandSearch) {
+            setModelsToShow(data?.models.filter(model => {
+                return model.brandId.name.includes(brandSearch);
+            }));
+        } else {
+            setModelsToShow(data?.models);
+        }
+    }, [data, brandSearch]);
+
+    const onChangeInput = (event) => {
+        if (event.nativeEvent.inputType === "deleteContentBackward") {
+            setBrandSearch(brandSearch.slice(0, brandSearch.length - 1));
+        } else if (event.nativeEvent.inputType === "insertText") {
+            setBrandSearch(brandSearch + event.nativeEvent.data);
+        }
+    }
+
     return (
         <Wrapper>
             <ScreenHeader>
@@ -34,8 +55,14 @@ const Models = () => {
                     create model
                 </Link>
                 <Toaster position="top-right"/>
+                <Input
+                    name="brand-search"
+                    placeholder="Search by brand name"
+                    value={brandSearch}
+                    onChange={onChangeInput}
+                />
             </ScreenHeader>
-            {!isFetching?data?.models?.length > 0 ? (
+            {!isFetching ? modelsToShow?.length > 0 ? (
                 <div>
                     <table className="w-full bg-gray-900 rounded-md">
                         <thead>
@@ -51,7 +78,7 @@ const Models = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {data?.models?.map(model => (
+                            {modelsToShow.map(model => (
                                <tr className="odd:bg-gray-800" key={model._id}>
                                   {/* <td className="p-3 capitalize text-sm font-normal text-gray-400">{model.brandName}</td> */}
                                   <td className="p-3 capitalize text-sm font-normal text-gray-400">{model.brandId.name}</td>
