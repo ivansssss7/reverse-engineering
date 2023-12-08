@@ -3,7 +3,7 @@ const carModel = require("../models/car-model.model");
 // const {validationResult} = require("express-validator");
 
 class Model {
-  create = async (req, res) => {
+  async create(req, res) {
     // Your implementation for the create method
     const form = formidable({ multiples: true });
     form.parse(req, async (err, fields) => {
@@ -65,10 +65,13 @@ class Model {
         console.log("errors: ", errors);
       }
     });
-  };
+  }
+  async getAll(req, res) {
+    const page = Number(req.query.page);
+    if (!page) {
+      return Model.getAllWithoutPagination(req, res);
+    }
 
-  async get(req, res) {
-    const page = req.query.page || 1;
     const perPage = 5;
     const skip = (page - 1) * perPage;
     try {
@@ -84,6 +87,14 @@ class Model {
     } catch (error) {
       console.log(error.message);
       return res.status(500).json({ error: error.message });
+    }
+  }
+  static async getAllWithoutPagination(req, res) {
+    try {
+        const models = await carModel.find({}).populate("brandId", "_id name");
+        return res.status(200).json({ models });
+    } catch (error) {
+        return res.status(500).json("server internal error");
     }
   }
 }

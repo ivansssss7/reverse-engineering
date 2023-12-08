@@ -4,6 +4,6 @@ const Model = require("../controllers/model.controller");
 const Authorization = require("../services/Authorization");
 
 router.post("/", Authorization.authorized, Model.create);
-router.get("/", Authorization.authorized, Model.get);
+router.get("/", Authorization.authorized, Model.getAll);
 
 module.exports = router;

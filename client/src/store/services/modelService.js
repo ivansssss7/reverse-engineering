@@ -33,7 +33,16 @@ const modelService = createApi({
           }
         },
         providesTags:["models"]
-      })
+      }),
+      allModels: builder.query({
+        query: () => {
+            return {
+                url: "",
+                method: "GET"
+            };
+        },
+        providesTags: ["models"],
+    })
     };
   },
 });
@@ -41,5 +50,6 @@ const modelService = createApi({
 export const {
   useCreateMutation,
   useGetModelsQuery,
+  useAllModelsQuery
 } = modelService;
 export default modelService;

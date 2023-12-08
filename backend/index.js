@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 app.use("/api/user", userRoutes);
 app.use("/api/brand", brandRoutes);
 app.use("/api/model", modelRoutes);
-app.use("/api/spare-part", sparePartRoutes);
+app.use("/api/product", sparePartRoutes);
 
 const port = env.PORT || 3000;
 

@@ -5,6 +5,7 @@ import CreateBrand from "../screens/dashboard/CreateBrand";
 import UpdateBrand from "../screens/dashboard/UpdateBrand"
 import Products from "../screens/dashboard/Products";
 import CreateModel from "../screens/dashboard/CreateModel";
+import CreateProduct from "../screens/dashboard/CreateProduct";
 import Models from "../screens/dashboard/Models";
 import Private from "./Private";
 import Public from "./Public";
@@ -25,6 +26,7 @@ const Routing = () => {
                     <Route path="models" element={<Private><Models/></Private>}/>
                     <Route path="models/:page" element={<Private><Models/></Private>}/>
                     <Route path="create-model" element={<Private><CreateModel/></Private>}/>
+                    <Route path="create-product" element={<Private><CreateProduct/></Private>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
