@@ -1,10 +1,13 @@
-import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import { Link , useNavigate} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import ScreenHeader from "../../components/ScreenHeader";
 import Multiselect from 'multiselect-react-dropdown';
 import Wrapper from "./Wrapper";
+import toast, { Toaster } from 'react-hot-toast';
 import { useAllModelsQuery } from "../../store/services/modelService";
 import { useCreateMutation } from "../../store/services/productService";
+import { setSuccess } from "../../store/reducers/globalReducer";
 import PicturePreview from "../../components/PicturePreview";
 const CreateProduct = () => {
     const { data=[], isFetching } = useAllModelsQuery();
@@ -65,6 +68,21 @@ const CreateProduct = () => {
         formData.append("photo", state.photo)
         createNewProduct(formData);
     }
+    useEffect(() => {
+        if(!response.isSuccess) {
+           response?.error?.data?.errors.map(err => {
+               toast.error(err.msg);
+           }) 
+        }
+     }, [response?.error?.data?.errors])
+     const dispatch = useDispatch();
+     const navigate = useNavigate();
+     useEffect(() => {
+         if(response?.isSuccess) {
+             dispatch(setSuccess(response?.data?.msg));
+            navigate('/dashboard/products');
+         }
+     }, [response?.isSuccess])
     return(
         <Wrapper>
             <ScreenHeader>
@@ -72,6 +90,7 @@ const CreateProduct = () => {
                 <i className="bi bi-arrow-left-short"></i> products list
             </Link>
             </ScreenHeader>
+            <Toaster position="top-right" reverseOrder={true}/>
             <div className="flex flex-wrap -mx-3">
                 <form className="w-full xl:w-8/12 p-3" onSubmit={createPro}>
                     <div className="flex flex-wrap">
@@ -152,7 +171,8 @@ const CreateProduct = () => {
                              className="input-file" onChange={pictureHandle}/>
                         </div>
                         <div className="w-full p-3">
-                            <input type="submit" value="save product" className="btn btn-indigo" />
+                            <input type="submit" value={response.isLoading?"loading...":"save product"}
+                            disabled={response.isLoading ? true :false} className="btn btn-indigo" />
                         </div>
                     </div>
                 </form>

@@ -9,7 +9,6 @@ const sparePartModel = require("../models/spare-part.model");
 class SparePart {
     async create(req, res) {
         const form = formidable({ multiples: true });
-
         console.log(__dirname);
         form.parse(req, async(err, fields, files)=>{
             if(!err){
